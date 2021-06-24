@@ -1,0 +1,6 @@
+EAss. Assign ::=  Id "=" Expr;
+EExp. Expr ::=  Term "^" Expr  | Expr "+" Term | Term ;
+ETerm. Term ::=  Term "<" Factor | Term "*" Factor | Factor;
+EFact. Factor ::=  Factor  "%" Newexp  | Newexp;
+ENew. Newexp ::=  "("Expr")"  | Id;
+EId. Id ::=  "A" | "B" | "C" | "D" ;
