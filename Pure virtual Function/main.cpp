@@ -6,6 +6,12 @@
 using namespace std;
 const double PI = 3.141592653589793238 ;
 
+/* A derived class object aggregates a base class object for the purpose of inheritance. A base class object contains a
+virtual table containing a derived class functions addresses which are assigned during creation of a derived class object.*/
+
+
+/// Shapes.
+/// base class.
 struct ShapeVTable;
 struct Shape
 {
@@ -20,9 +26,11 @@ double GetArea(Shape* shape)
 {
     shape->vtable->GetArea(shape);
 }
+/// ------------------------------------------------------------------------------------------------------------------///
 
-
-struct Circle
+/// Circle.
+/// Derived class
+struct Circle  /// create struct with the name of shape and init shape from base class and make new variables
 {
     Shape parent;
     double radius;
@@ -42,8 +50,11 @@ void CircleInitialize(Circle* circle,double radius)
     circle->parent.vtable=&circle_vtable;
     circle->radius=radius;
 }
+/// ------------------------------------------------------------------------------------------------------------------///
 
-struct Rectangle
+/// Rectangle
+/// Derived class
+struct Rectangle   /// create struct with the name of shape and init shape from base class and make new variables
 {
     Shape parent;
     double height;
@@ -65,9 +76,11 @@ void RectangleInitialize(Rectangle* rectangle,double width,double  height)
     rectangle->height=height;
     rectangle->width=width;
 }
+/// -------------------------------------------------------------------------------------------------------------------///
 
-
-struct Triangle
+/// Triangle
+/// Derived class
+struct Triangle    /// create struct with the name of shape and init shape from base class and make new variables
 {
     Shape parent;
     double a;
@@ -77,7 +90,9 @@ struct Triangle
 
 double GetArea_Triangle(Triangle* triangle)
 {
-    return (triangle->a + triangle->b  + triangle->c) / 2 ;
+    /// Heron's Formula. area = 0.25 * √( (a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c) )
+   /// I know all sides of the triangle.
+    return  0.25 * sqrt( ( (triangle->a + triangle->b + triangle->c) * ( - triangle-> a  + triangle-> b + triangle->c) * (triangle->a - triangle->b + triangle->c) * (triangle->a + triangle->b - triangle->c) )  );
 }
 
 ShapeVTable triangle_vtable = {
@@ -91,6 +106,7 @@ void TriangleInitialize(Triangle* triangle,double a,double b,double c)
     triangle->b=b;
     triangle->c=c;
 }
+/// ------------------------------------------------------------------------------------------------------------------///
 
 
 int main()
@@ -98,13 +114,18 @@ int main()
 
     Circle circle;
     CircleInitialize(&circle, 10); /// circle with radius 10
+    ///CircleInitialize(&circle, 20); /// circle with radius 20
+    ///CircleInitialize(&circle, 30); /// circle with radius 30
 
     Rectangle rectangle;
     RectangleInitialize(&rectangle, 3, 5); /// rectangle with width 3 and height 5
+    /// RectangleInitialize(&rectangle, 6, 7); /// rectangle with width 6 and height 9
+    /// RectangleInitialize(&rectangle, 9, 11); /// rectangle with width 9 and height 11
 
     Triangle triangle;
-    TriangleInitialize(&triangle, 7, 4, 12); /// triangle with side lengths: 7, 4, 12
-
+    TriangleInitialize(&triangle, 7, 4, 12); /// triangle with side lengths: 7, 4, 12     (This is Wrong test Case because 4+7 < 12 )  Output is nan
+    /// TriangleInitialize(&triangle, 5, 8, 9); /// triangle with side lengths: 5, 8, 9
+    ///TriangleInitialize(&triangle, 15, 14, 13); /// triangle with side lengths: 15, 14, 13
 
     Shape* shapes[3];
     shapes[0]=(Shape*)&circle;
@@ -117,6 +138,7 @@ int main()
     for(i=0;i<3;i++)
     {
         double d=GetArea(shapes[i]);
+        /// cout << d << endl;
         total_area+=d;
     }
     cout<<total_area<<endl; /// check if the value is correct
